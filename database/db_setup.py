@@ -8,22 +8,22 @@ cur = conn.cursor()
 cur.execute(
     """
     CREATE TABLE users (
-	user_id SERIAL PRIMARY KEY,
-	CarOwn_id INT,
-	CarGoInId INT,
+	user_id VARCHAR(255) PRIMARY KEY,
+	CarOwn_id VARCHAR(255),
+	CarGoInId VARCHAR(255),
 	name VARCHAR(255),
 	x_coord DOUBLE PRECISION,
 	y_coord DOUBLE PRECISION,
 	phone_number VARCHAR(20),
-	event_id INT);
+	event_id VARCHAR(255));
 
     CREATE TABLE cars (
-        car_id INT,
+        car_id VARCHAR(255),
         seats_available INT,
         passengers INT);
 
     CREATE TABLE events (
-        event_id INT,
+        event_id VARCHAR(255),
         event_name VARCHAR(255),
         description VARCHAR(255),
         start_date DATE,
