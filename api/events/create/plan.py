@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from services.uuid_generator import get_uuid
 from dotenv import load_dotenv
 from services.api_calls import geocoding
+from database.connect_db import get_db_connection
 import psycopg2
 import os
 
@@ -31,21 +32,8 @@ def create_plan():
 
     event_uuid = get_uuid()
 
-    db_host = os.getenv('DB_HOST')
-    db_port = os.getenv('DB_PORT')
-    db_user = os.getenv('DB_USER')
-    db_pass = os.getenv('DB_PASS')
-    db_name = os.getenv('DB_NAME')
-
     try:
-        # Connect to the PostgreSQL database
-        conn = psycopg2.connect(
-            host=db_host,
-            dbname=db_name,
-            user=db_user,
-            password=db_pass,
-            port=db_port
-        )
+        conn = get_db_connection()
         cur = conn.cursor()
 
         # Insert event data into the database
