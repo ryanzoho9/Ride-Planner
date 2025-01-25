@@ -3,7 +3,7 @@ import uuid
 
 edit_blueprint = Blueprint('edit', __name__, url_prefix='/events/edit')
 
-@edit_blueprint.route('edit_plan', methods=['PUT'])
+@edit_blueprint.route('edit_plan', methods=['POST'])
 def edit_plan():
     data = request.get_json()
     if not data:
