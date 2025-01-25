@@ -1,4 +1,5 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
+import uuid
 
 api_blueprint = Blueprint('api', __name__)
 
