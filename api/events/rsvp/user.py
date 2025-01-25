@@ -11,12 +11,12 @@ def create_event():
     
     name = data.get("name")
     address = data.get("address", "N/A")
-    phone_nuber = data.get("phone_number", "N/A")
+    phone_number = data.get("phone_number", "N/A")
 
     if not name:
         return jsonify({"error" : "Missing Name Field"}), 400
     
     # INSERT INFO INTO DB ONCE INITIALIZED
 
-    eventUUID = str(uuid.uuid4())
-    return jsonify({"uuid": eventUUID}), 200
+    user_uuid = str(uuid.uuid4())
+    return jsonify({"user_uuid": user_uuid}), 200
