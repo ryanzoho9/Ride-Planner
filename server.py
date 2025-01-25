@@ -1,9 +1,9 @@
 from flask import Flask
-from api.routes import api_blueprint
+from api import api_blueprint
 
 app = Flask(__name__)
 
-app.register_blueprint(api_blueprint, url_prefix='/api')
+app.register_blueprint(api_blueprint)
 
 @app.route('/')
 def home():
