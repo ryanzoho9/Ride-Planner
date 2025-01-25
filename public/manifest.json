@@ -1,0 +1,29 @@
+{
+  "name": "Ride Planner",
+  "short_name": "Ride Planner",
+  "description": "Coordinating plans and rides made easy.",
+  "start_url": "/",
+  "scope": "/",
+  "theme_color": "#eeeeee",
+  "background_color": "#eeeeee",
+  "display": "standalone",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://example.com/static/icon/192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://example.com/static/icon/512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts" : [
+    {
+      "name": "Home",
+      "url": "/"
+    }
+  ]
+}
