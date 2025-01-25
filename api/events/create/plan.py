@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-import uuid
+from services.uuid_generator import get_uuid
 
 create_blueprint = Blueprint('create', __name__, url_prefix='/events/create')
 
@@ -21,5 +21,5 @@ def create_plan():
     
     # INSERT INTO DB
 
-    event_uuid = str(uuid.uuid4())
+    event_uuid = get_uuid()
     return jsonify({"event_uuid": event_uuid}), 200
