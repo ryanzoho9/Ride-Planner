@@ -88,15 +88,24 @@ def create_user():
 
 
 def createCar(car_uuid):
-    conn = connect_db.get_db_connection()
-    cur = conn.cursor()
-    cur.execute(
-        """
+    
+    db_host = os.getenv("DB_HOST")
+    db_port = os.getenv("DB_PORT")
+    db_user = os.getenv("DB_USER")
+    db_pass = os.getenv("DB_PASS")
+    db_name = os.getenv("DB_NAME")
+
+    try:
+        conn = psycopg2.connect(
+            host=db_host, dbname=db_name, user=db_user, password=db_pass, port=db_port
+        )
+        cur = conn.cursor()
+        cur.execute("""
                 INSERT INTO cars(car_id, seats_available, passengers)
                 VALUES (%s, 4, 1)
-                """,
-        (car_uuid),
-    )
-    conn.commit()
-    cur.close()
-    conn.close()
+                """,(car_uuid,))
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception as e:
+        return jsonify({"error": f"Database error: {str(e)}"}), 500
