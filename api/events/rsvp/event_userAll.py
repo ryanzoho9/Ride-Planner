@@ -36,7 +36,6 @@ def event_allUser(event_uuid):
     except Exception as e:
         return {"error": f"Database error: {str(e)}"}
 
-
 def get_events(event_uuid):
     db_host = os.getenv("DB_HOST")
     db_port = os.getenv("DB_PORT")
