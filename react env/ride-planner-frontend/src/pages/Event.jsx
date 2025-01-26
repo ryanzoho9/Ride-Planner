@@ -20,7 +20,7 @@ function Event() {
       return;
     }
 
-    const url = `http://localhost:5173/api/events/create/get_event?eventId=${id}`;
+    const url = `http://localhost:3002/api/events/create/get_event?eventId=${id}`;
     console.log("Fetching event info from:", url);
 
     fetch(url)
@@ -70,8 +70,18 @@ function Event() {
       });
   }, [id]);
 
-  // Handle Ride Planner button click
+  // Handle button clicks
   const openRidePlanner = () => {
+    alert("Ride planner is opening...");
+    // Implement your ride planner functionality here
+  };
+
+  const openShareSheet = () => {
+    alert("Ride planner is opening...");
+    // Implement your ride planner functionality here
+  };
+
+  const openRsvpModal = () => {
     alert("Ride planner is opening...");
     // Implement your ride planner functionality here
   };
@@ -87,29 +97,36 @@ function Event() {
       {/* Event Info Section */}
       {eventInfo && (
         <div style={styles.eventInfo}>
-          <img src="/assets/share.svg" onClick={openShareSheet} style="width: auto; height: 40px; position: relative; right: 20;"></img>
-          <h1>{eventInfo.name}</h1>
+          <img
+            src="/assets/share.svg"
+            onClick={openShareSheet}
+            style={{
+              width: "auto",
+              height: "40px",
+              position: "absolute",
+              right: "20px",
+            }}
+          />
+          <h1>{eventInfo.event_name}</h1>
           <p>{eventInfo.description}</p>
           <br></br>
-          <p style="color: var(--gray-40);">
+          <p style={{ color: "var(--gray-40)" }}>
             {eventInfo.start_date} @ {eventInfo.start_time}
           </p>
-          <p style="color: var(--gray-40);">
-            {eventInfo.event_address}
-          </p>
+          <p style={{ color: "var(--gray-40)" }}>{eventInfo.event_address}</p>
         </div>
       )}
 
       {/* Ride Planner Button */}
       <div style={styles.buttonContainer}>
-        <button style={styles.ridePlannerButton} onClick={openRidePlanner}>
+        <button style={styles.ridePlannerButton} onClick={openRsvpModal}>
           Confirm RSVP
         </button>
       </div>
 
       {/* Attendees List */}
       <div style={styles.attendeesSection}>
-        <h2 style="margin: .5em 0 0 0;">Attendees</h2>
+        <h2 style={{ margin: ".5em 0 0 0" }}>Attendees</h2>
         <a onClick={openRidePlanner}>Open ride planner</a>
         <ul style={styles.attendeesList}>
           {attendees.map((attendee) => (
@@ -150,7 +167,7 @@ const styles = {
     backgroundColor: "#007bff",
     color: "white",
     border: "none",
-    borderRadius: "5px",
+    borderRadius: "16px",
     cursor: "pointer",
   },
   attendeesSection: {
@@ -159,7 +176,7 @@ const styles = {
   attendeesList: {
     listStyle: "none",
     padding: "0",
-    marginTop: "20px"
+    marginTop: "20px",
   },
   attendeeItem: {
     padding: "10px",
