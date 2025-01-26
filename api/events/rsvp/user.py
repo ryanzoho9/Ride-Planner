@@ -3,6 +3,7 @@ from services.uuid_generator import get_uuid
 from services.api_calls import geocoding
 import psycopg2
 import os
+from database import connect_db
 
 user_blueprint = Blueprint("user", __name__, url_prefix="/events/rsvp")
 
@@ -26,7 +27,7 @@ def create_user():
     if car_owner == "Yes":
         car_owner = get_uuid()
         cargoin_id = car_owner
-        # CREATE CAR
+        createCar(car_owner)
 
     if address == "N/A":
         x_coord = None
@@ -84,3 +85,15 @@ def create_user():
 
     except Exception as e:
         return jsonify({"error": f"Database error: {str(e)}"}), 500
+
+
+def createCar(car_uuid):
+    conn = connect_db.get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        """
+                INSERT INTO cars(car_id, seats_available, passengers)
+                VALUES (%s, 4, 1)
+                """,
+        (car_uuid),
+    )
