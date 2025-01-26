@@ -42,7 +42,6 @@ function Create() {
       };
 
       // Send POST request to the Flask endpoint
-      // TODO: CHANGE LOCALHOST TO WHATEVER IS CORRECT
       const response = await fetch(
         "http://127.0.0.1:3002/api/events/create/create_plan",
         {
@@ -61,15 +60,36 @@ function Create() {
         setMessage(`Error: ${result.error || "Unknown error occurred"}`);
       } else {
         // Success: The backend returns event_uuid in result
-        setMessage(`Event created! ID: ${result.event_uuid}`);
-        // Optionally reset the form
-        setFormData({
-          event_name: "",
-          description: "",
-          start_date: "",
-          start_time: "",
-          event_address: "",
-        });
+        const eventUuid = result.event_uuid;
+        const eventUrl = `http://localhost:5173/event?id=${eventUuid}`;
+
+        // Show a pop-up window with the event URL
+        const userConfirmed = window.confirm(
+          "The event was created successfully! Share the code below for others to join your event!\n\n" +
+            eventUrl
+        );
+
+        if (userConfirmed) {
+          // Use the Web Share API if supported
+          if (navigator.share) {
+            try {
+              await navigator.share({
+                title: "Join My Event",
+                text: "Click the link to join the event:",
+                url: eventUrl,
+              });
+            } catch (err) {
+              console.error("Share failed:", err.message);
+            }
+          } else {
+            // Fallback: Copy URL to clipboard
+            navigator.clipboard.writeText(eventUrl);
+            alert("Event URL copied to clipboard!");
+          }
+
+          // Redirect the user to the event page
+          window.location.href = eventUrl;
+        }
       }
     } catch (error) {
       // Handle network or unexpected errors
