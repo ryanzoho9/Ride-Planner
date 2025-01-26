@@ -2,46 +2,72 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 function Event() {
-  const { eventId } = useParams(); // Get the event ID from the URL
+  const queryParameters = new URLSearchParams(window.location.search);
+  const id = queryParameters.get("id");
   const [eventInfo, setEventInfo] = useState(null); // State for event info
   const [attendees, setAttendees] = useState([]); // State for attendees
   const [loadingEvent, setLoadingEvent] = useState(true); // Loading state for event info
   const [loadingAttendees, setLoadingAttendees] = useState(true); // Loading state for attendees
   const [error, setError] = useState(null); // State for errors
 
-  // Fetch event info using the event ID
   useEffect(() => {
-    fetch(`http://localhost:5000/api/event/${eventId}`)
+    console.log("EVENT ID ->>>>>>>>>>>>" + id);
+    if (!id) {
+      console.error("No id provided in URL");
+      setError("Invalid event ID");
+      setLoadingEvent(false);
+      return;
+    }
+
+    const url = `http://127.0.0.1:3002/api/events/create/get_event?eventId=${id}`;
+    console.log("Fetching event info from:", url);
+
+    fetch(url)
       .then((response) => {
+        console.log("Event info response status:", response.status);
         if (!response.ok) throw new Error("Failed to fetch event info");
         return response.json();
       })
       .then((data) => {
+        console.log("Fetched event data:", data);
         setEventInfo(data);
         setLoadingEvent(false);
       })
       .catch((err) => {
+        console.error("Error fetching event info:", err.message);
         setError(err.message);
         setLoadingEvent(false);
       });
-  }, [eventId]); // Re-fetch if eventId changes
+  }, [id]);
 
-  // Fetch attendee list using the event ID
   useEffect(() => {
-    fetch(`http://localhost:5000/api/event/${eventId}/attendees`)
+    if (!id) {
+      console.error("No id provided in URL");
+      setError("Invalid event ID");
+      setLoadingAttendees(false);
+      return;
+    }
+
+    const url = `http://127.0.0.1:3002/api/events/create/get_event_attendees?eventId=${id}`;
+    console.log("Fetching attendees from:", url);
+
+    fetch(url)
       .then((response) => {
+        console.log("Attendees response status:", response.status);
         if (!response.ok) throw new Error("Failed to fetch attendees");
         return response.json();
       })
       .then((data) => {
+        console.log("Fetched attendees data:", data);
         setAttendees(data);
         setLoadingAttendees(false);
       })
       .catch((err) => {
+        console.error("Error fetching attendees:", err.message);
         setError(err.message);
         setLoadingAttendees(false);
       });
-  }, [eventId]); // Re-fetch if eventId changes
+  }, [id]);
 
   // Handle Ride Planner button click
   const openRidePlanner = () => {
@@ -62,9 +88,15 @@ function Event() {
         <div style={styles.eventInfo}>
           <h1>{eventInfo.name}</h1>
           <p>{eventInfo.description}</p>
-          <p><strong>Date:</strong> {eventInfo.date}</p>
-          <p><strong>Time:</strong> {eventInfo.time}</p>
-          <p><strong>Location:</strong> {eventInfo.location}</p>
+          <p>
+            <strong>Date:</strong> {eventInfo.start_date}
+          </p>
+          <p>
+            <strong>Time:</strong> {eventInfo.start_time}
+          </p>
+          <p>
+            <strong>Location:</strong> {eventInfo.event_address}
+          </p>
         </div>
       )}
 
