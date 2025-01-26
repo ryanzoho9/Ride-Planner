@@ -27,7 +27,7 @@ def create_user():
     if car_owner == "Yes":
         car_owner = get_uuid()
         cargoin_id = car_owner
-        createCar(car_owner)
+        createCar(car_owner)    
 
     if address == "N/A":
         x_coord = None
@@ -97,3 +97,6 @@ def createCar(car_uuid):
                 """,
         (car_uuid),
     )
+    conn.commit()
+    cur.close()
+    conn.close()
