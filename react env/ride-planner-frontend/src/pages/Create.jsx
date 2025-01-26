@@ -133,6 +133,7 @@ function Create() {
             type="date"
             id="start_date"
             name="start_date"
+            min="2025-01-26"
             value={formData.start_date}
             onChange={handleChange}
             required

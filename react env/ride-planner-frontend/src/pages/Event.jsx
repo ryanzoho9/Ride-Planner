@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Modal from "../components/Modal.jsx";
 
 function Event() {
   const queryParameters = new URLSearchParams(window.location.search);
@@ -19,7 +20,7 @@ function Event() {
       return;
     }
 
-    const url = `http://127.0.0.1:3002/api/events/create/get_event?eventId=${id}`;
+    const url = `http://localhost:5173/api/events/create/get_event?eventId=${id}`;
     console.log("Fetching event info from:", url);
 
     fetch(url)
@@ -86,16 +87,15 @@ function Event() {
       {/* Event Info Section */}
       {eventInfo && (
         <div style={styles.eventInfo}>
+          <img src="/assets/share.svg" onClick={openShareSheet} style="width: auto; height: 40px; position: relative; right: 20;"></img>
           <h1>{eventInfo.name}</h1>
           <p>{eventInfo.description}</p>
-          <p>
-            <strong>Date:</strong> {eventInfo.start_date}
+          <br></br>
+          <p style="color: var(--gray-40);">
+            {eventInfo.start_date} @ {eventInfo.start_time}
           </p>
-          <p>
-            <strong>Time:</strong> {eventInfo.start_time}
-          </p>
-          <p>
-            <strong>Location:</strong> {eventInfo.event_address}
+          <p style="color: var(--gray-40);">
+            {eventInfo.event_address}
           </p>
         </div>
       )}
@@ -103,13 +103,14 @@ function Event() {
       {/* Ride Planner Button */}
       <div style={styles.buttonContainer}>
         <button style={styles.ridePlannerButton} onClick={openRidePlanner}>
-          Open Ride Planner
+          Confirm RSVP
         </button>
       </div>
 
       {/* Attendees List */}
       <div style={styles.attendeesSection}>
-        <h2>Attendees</h2>
+        <h2 style="margin: .5em 0 0 0;">Attendees</h2>
+        <a onClick={openRidePlanner}>Open ride planner</a>
         <ul style={styles.attendeesList}>
           {attendees.map((attendee) => (
             <li key={attendee.id} style={styles.attendeeItem}>
@@ -127,23 +128,25 @@ export default Event;
 // Inline styles
 const styles = {
   container: {
-    padding: "20px",
+    padding: "40px 20px",
     fontFamily: "Arial, sans-serif",
+    maxWidth: "600px",
+    margin: "auto",
   },
   eventInfo: {
-    marginBottom: "20px",
-    padding: "15px",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    backgroundColor: "#f9f9f9",
+    marginBottom: "32px",
+    padding: "30px 20px",
+    borderRadius: "32px",
+    backgroundColor: "#eee",
+    position: "relative",
   },
   buttonContainer: {
     textAlign: "center",
     marginBottom: "20px",
   },
   ridePlannerButton: {
-    padding: "10px 20px",
-    fontSize: "16px",
+    padding: "12px 26px",
+    fontSize: "20px",
     backgroundColor: "#007bff",
     color: "white",
     border: "none",
@@ -151,11 +154,12 @@ const styles = {
     cursor: "pointer",
   },
   attendeesSection: {
-    marginTop: "20px",
+    marginTop: "40px",
   },
   attendeesList: {
     listStyle: "none",
     padding: "0",
+    marginTop: "20px"
   },
   attendeeItem: {
     padding: "10px",
