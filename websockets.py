@@ -1,36 +1,74 @@
 from flask_socketio import SocketIO, emit
+from database.connect_db import get_db_connection
+import json
 
 def register_websocket_handlers(socketio: SocketIO):
-    """
-    Register all WebSocket event handlers.
-    """
+    @socketio.on('rsvp')
+    def handle_rsvp(data):
+        # Insert RSVP data into the database
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
 
-    print('REACHED REGISTER FUNCTION')
-    # Listen for a user message
-    @socketio.on('user_message')
-    def handle_user_message(data):
-        print(f"Received message: {data}")
+            cur.execute(
+                """
+                UPDATE users
+                SET CarGoInId = %s
+                WHERE user_id = %s
+                """,
+                (data['car_go_in_id'], data['user_id'])
+            )
+
+            conn.commit()
+            cur.close()
+            conn.close()
+
+            emit('rsvp_update', data, broadcast=True)
+        except Exception as e:
+            raise Exception("Database Failed")
+
+    @socketio.on('assign_driver')
+    def handle_driver_assignment(data):
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+
+            cur.execute(
+                """
+                UPDATE users
+                SET CarOwn_id = %s
+                WHERE user_id = %s
+                """,
+                (data['user_id'], data['user_id'])
+            )
+
+            conn.commit()
+            cur.close()
+            conn.close()
+
+            emit('assign_update', {'user_id': data['user_id'], 'role': 'driver'}, broadcast=True)
+        except Exception as e:
+            raise Exception("Database Failed")
         
-        # Respond dynamically based on the message
-        if data.lower() == "hello":
-            emit('response', "Hi there! How can I help you?")
-        elif data.lower() == "bye":
-            emit('response', "Goodbye! Have a great day!")
-        else:
-            emit('response', f"You said: {data}")
+    @socketio.on('assign_rider')
+    def handle_rider_assignment(data):
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
 
-    # Example for broadcasting
-    @socketio.on('broadcast_message')
-    def handle_broadcast_message(data):
-        print(f"Broadcasting message: {data}")
-        emit('response', f"Broadcast: {data}", broadcast=True)
+            cur.execute(
+                """
+                UPDATE users
+                SET CarGoInId = %s
+                WHERE user_id = %s
+                """,
+                (data['car_id'], data['user_id'])
+            )
 
-    # Handle WebSocket connections
-    @socketio.on('connect')
-    def on_connect():
-        print("A client connected")
+            conn.commit()
+            cur.close()
+            conn.close()
 
-    # Handle WebSocket disconnections
-    @socketio.on('disconnect')
-    def on_disconnect():
-        print("A client disconnected")
+            emit('assign_update', {'user_id': data['user_id'], 'car_id': data['car_id'], 'role': 'rider'}, broadcast=True)
+        except Exception as e:
+            raise Exception("Database Failed")
