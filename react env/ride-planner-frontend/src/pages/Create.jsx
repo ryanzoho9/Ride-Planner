@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/create.css";
+import "../styles/pages/create.css";
 
 function Create() {
   const [formData, setFormData] = useState({
@@ -51,6 +51,7 @@ function Create() {
           <label htmlFor="title">Event title:</label>
           <input
             type="text"
+            class="text-input body-text width-100"
             id="title"
             name="title"
             value={formData.title}
