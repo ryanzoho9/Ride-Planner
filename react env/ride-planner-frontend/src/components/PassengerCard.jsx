@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PersonCard = ({ userId, name, isDriver, onAddDriver, onRemoveDriver, onAddPassenger, onRemovePassenger }) => {
+const PassengerCard = ({ userId, name, isDriver, onAddDriver, onRemoveDriver, onAddPassenger, onRemovePassenger }) => {
   return (
     <div id={userId} data-name={name} className="passenger">
       <div className="passName">{name}</div>
@@ -29,4 +29,4 @@ const PersonCard = ({ userId, name, isDriver, onAddDriver, onRemoveDriver, onAdd
   );
 };
 
-export default PersonCard;
+export default PassengerCard;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Passenger from "./Passenger";
-import CarGroup from "./CarGroup";
+import PassengerCard from "../components/PassengerCard.jsx";
+import CarGroup from "../components/CarGroup.jsx";
 
 const Rides = ({ webSocket }) => {
   const [data, setData] = useState({ unassigned: [], cars: [] });
@@ -38,7 +38,7 @@ const Rides = ({ webSocket }) => {
       <p style={{ marginTop: "30px" }}>Unassigned</p>
       <div id="unassigned">
         {data.unassigned.map((id) => (
-          <Passenger
+          <PassengerCard
             key={id}
             id={id}
             role="unassigned"

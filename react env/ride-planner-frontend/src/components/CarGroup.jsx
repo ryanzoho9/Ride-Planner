@@ -1,12 +1,12 @@
 import React from "react";
-import Passenger from "./PassengerCard";
+import PassengerCard from "./PassengerCard.jsx";
 
 const CarGroup = ({ driver, passengers, sendAction }) => {
   return (
     <div className="car">
-      <Passenger id={driver} role="driver" sendAction={sendAction} />
+      <PassengerCard id={driver} role="driver" sendAction={sendAction} />
       {passengers.map((passenger) => (
-        <Passenger
+        <PassengerCard
           key={passenger}
           id={passenger}
           role="passenger"
