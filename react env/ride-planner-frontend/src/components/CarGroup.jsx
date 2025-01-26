@@ -1,5 +1,5 @@
 import React from "react";
-import Passenger from "./Passenger";
+import Passenger from "./PassengerCard";
 
 const CarGroup = ({ driver, passengers, sendAction }) => {
   return (
