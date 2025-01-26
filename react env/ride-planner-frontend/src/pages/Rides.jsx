@@ -43,9 +43,9 @@ const Rides = ({ webSocket }) => {
             id={id}
             role="unassigned"
             sendAction={sendAction}
-            availableDrivers={data.cars.filter(
-              (car) => car.passengers.length < 4
-            ).map((car) => car.driver)}
+            availableDrivers={data.cars
+              .filter((car) => car.passengers.length < 4)
+              .map((car) => car.driver)}
           />
         ))}
       </div>
